@@ -2,14 +2,17 @@ from flask import Flask, request
 from flask_restx import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config.from_pyfile("default_config.py")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['RESTX_JSON'] = {'ensure_ascii': False, 'indent': 3}
 
+
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 api = Api(app)
 
 movie_ns = api.namespace('movies')
