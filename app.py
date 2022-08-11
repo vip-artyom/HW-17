@@ -7,6 +7,7 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 
 app.config.from_pyfile("default_config.py")
+app.config.from_envvar("APP_SETTINGS", silent=True)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['RESTX_JSON'] = {'ensure_ascii': False, 'indent': 3}
 
@@ -28,10 +29,6 @@ class Movie(db.Model):
     trailer = db.Column(db.String(255))
     year = db.Column(db.Integer)
     rating = db.Column(db.Float)
-    genre_id = db.Column(db.Integer, db.ForeignKey("genre.id"))
-    genre = db.relationship("Genre")
-    director_id = db.Column(db.Integer, db.ForeignKey("director.id"))
-    director = db.relationship("Director")
 
 
 class MovieSchema(Schema):
@@ -41,8 +38,6 @@ class MovieSchema(Schema):
     trailer = fields.Str()
     year = fields.Int()
     rating = fields.Float()
-    genre_id = fields.Int()
-    director_id = fields.Int()
 
 
 class Director(db.Model):
@@ -122,8 +117,6 @@ class MoviesView(Resource):
         movie.trailer = req_json["trailer"]
         movie.year = req_json["year"]
         movie.rating = req_json["rating"]
-        movie.genre_id = req_json["genre_id"]
-        movie.director_id = req_json["director_id"]
 
         db.session.add(movie)
         db.session.commit()
