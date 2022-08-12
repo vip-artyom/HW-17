@@ -7,6 +7,7 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 
 app.config.from_pyfile("default_config.py")
+
 app.config.from_envvar("APP_SETTINGS", silent=True)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['RESTX_JSON'] = {'ensure_ascii': False, 'indent': 3}
