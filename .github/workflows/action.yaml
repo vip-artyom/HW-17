@@ -1,4 +1,4 @@
-name: Build and deploy workflow
+name: Build and deploy workflows
 on: [push]
 jobs:
   build_and_push:
